@@ -30,7 +30,7 @@
         <logger name="org.springframework.web" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE"/>
         </logger>
-        <logger name="org.hibernate" level="DEBUG" additivity="false">
+        <logger name="org.hibernate" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE"/>
         </logger>
         <logger name="com.github.ahmetcanik.validator.RequestProcessorServiceApplication" level="DEBUG" additivity="false">
