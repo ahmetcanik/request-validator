@@ -1,5 +1,7 @@
 package com.github.ahmetcanik.validator;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CollectorRequest {
 	private int customerID;
 	private int tagID;
