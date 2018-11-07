@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 @Configuration
 @PropertySource({"classpath:application.properties"})
-@EnableJpaRepositories(basePackages = {"com.github.ahmetcanik.validator.data.entity"}, entityManagerFactoryRef = "validatorEntityManagerFactory",
+@EnableJpaRepositories(basePackages = {"com.github.ahmetcanik.validator.data"}, entityManagerFactoryRef = "validatorEntityManagerFactory",
 		transactionManagerRef = "validatorTransactionManager")
 public class DbConfig {
 
