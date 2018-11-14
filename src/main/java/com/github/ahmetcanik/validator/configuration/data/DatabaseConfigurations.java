@@ -19,12 +19,12 @@ import java.util.HashMap;
 @PropertySource({"classpath:application.properties"})
 @EnableJpaRepositories(basePackages = {"com.github.ahmetcanik.validator.data"}, entityManagerFactoryRef = "validatorEntityManagerFactory",
 		transactionManagerRef = "validatorTransactionManager")
-public class DbConfig {
+public class DatabaseConfigurations {
 
 	private final Environment env;
 
 	@Autowired
-	public DbConfig(Environment env) {
+	public DatabaseConfigurations(Environment env) {
 		this.env = env;
 	}
 

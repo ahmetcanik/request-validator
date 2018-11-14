@@ -59,6 +59,17 @@ public class RequestProcessorControllerTest {
 	}
 
 	@Test
+	public void processRequestMissingFieldCustomerID() throws Exception {
+		mvc.perform(post("/processor")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"tagID\":2,\"userID\":\"aaaaaaaa-bbbb-cccc-1111-222222222222\",\"remoteIP\":\"123.234.56.78\"," +
+						"\"timestamp\":1500000000}"))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("customerID.empty"));
+
+	}
+
+	@Test
 	public void processRequestCustomerNotFound() throws Exception {
 		CollectorRequest collectorRequest = new CollectorRequest();
 		collectorRequest.setCustomerID(5);

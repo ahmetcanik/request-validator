@@ -1,25 +1,25 @@
 package com.github.ahmetcanik.validator;
 
 public class CollectorRequest {
-	private int customerID;
-	private int tagID;
+	private Integer customerID;
+	private Integer tagID;
 	private String userID;
 	private String remoteIP;
-	private int timestamp;
+	private Integer timestamp;
 
-	public int getCustomerID() {
+	public Integer getCustomerID() {
 		return customerID;
 	}
 
-	public void setCustomerID(int customerID) {
+	public void setCustomerID(Integer customerID) {
 		this.customerID = customerID;
 	}
 
-	public int getTagID() {
+	public Integer getTagID() {
 		return tagID;
 	}
 
-	public void setTagID(int tagID) {
+	public void setTagID(Integer tagID) {
 		this.tagID = tagID;
 	}
 
@@ -39,11 +39,11 @@ public class CollectorRequest {
 		this.remoteIP = remoteIP;
 	}
 
-	public int getTimestamp() {
+	public Integer getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(int timestamp) {
+	public void setTimestamp(Integer timestamp) {
 		this.timestamp = timestamp;
 	}
 }
