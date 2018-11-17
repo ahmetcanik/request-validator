@@ -134,11 +134,12 @@ public class RequestProcessorControllerTest {
 		collectorRequest.setRemoteIP("192.168.1.1");
 		collectorRequest.setTimestamp(1500000000);
 
+		String userAgent = "A6-Indexer";
 		mvc.perform(post("/processor")
 				.contentType(MediaType.APPLICATION_JSON)
-				.header("User-Agent", "A6-Indexer")
+				.header("User-Agent", userAgent)
 				.content(new ObjectMapper().writeValueAsString(collectorRequest)))
 				.andExpect(status().isBadRequest())
-				.andExpect(content().string("User-Agent Blacklisted"));
+				.andExpect(content().string("User-Agent " + userAgent + " is blacklisted"));
 	}
 }
