@@ -59,14 +59,23 @@ public class RequestProcessorControllerTest {
 	}
 
 	@Test
-	public void processRequestMissingFieldCustomerID() throws Exception {
+	public void processRequestMissingIntegerField() throws Exception {
 		mvc.perform(post("/processor")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"tagID\":2,\"userID\":\"aaaaaaaa-bbbb-cccc-1111-222222222222\",\"remoteIP\":\"123.234.56.78\"," +
 						"\"timestamp\":1500000000}"))
 				.andExpect(status().isBadRequest())
-				.andExpect(content().string("customerID.empty"));
+				.andExpect(content().string("customerID cannot be null"));
+	}
 
+	@Test
+	public void processRequestMissingStringField() throws Exception {
+		mvc.perform(post("/processor")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"customerId\":2,\"tagID\":2,\"remoteIP\":\"123.234.56.78\"," +
+						"\"timestamp\":1500000000}"))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("userID cannot be null"));
 	}
 
 	@Test

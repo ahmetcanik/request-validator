@@ -1,10 +1,21 @@
 package com.github.ahmetcanik.validator;
 
+import javax.validation.constraints.NotNull;
+
 public class CollectorRequest {
+	@NotNull(message = "customerID cannot be null")
 	private Integer customerID;
+
+	@NotNull(message = "tagID cannot be null")
 	private Integer tagID;
+
+	@NotNull(message = "userID cannot be null")
 	private String userID;
+
+	@NotNull(message = "remoteIP cannot be null")
 	private String remoteIP;
+
+	@NotNull(message = "timestamp cannot be null")
 	private Integer timestamp;
 
 	public Integer getCustomerID() {

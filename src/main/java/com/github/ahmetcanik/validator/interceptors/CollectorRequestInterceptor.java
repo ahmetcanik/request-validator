@@ -1,6 +1,7 @@
 package com.github.ahmetcanik.validator.interceptors;
 
 import com.github.ahmetcanik.validator.data.repository.UaBlacklistRepository;
+import com.github.ahmetcanik.validator.exceptions.InvalidCollectorRequestException;
 import com.github.ahmetcanik.validator.exceptions.UserAgentBlacklistedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ public class CollectorRequestInterceptor implements HandlerInterceptor {
 			try {
 				CollectorRequestValidator.validateUserAgent(userAgent, uaBlacklistRepository);
 			} catch (UserAgentBlacklistedException e) {
-				response.setStatus(400);
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				response.getWriter().write(e.getMessage());
 				// stop the chain
 				return false;
@@ -35,7 +36,15 @@ public class CollectorRequestInterceptor implements HandlerInterceptor {
 		}
 
 		String requestBody = request.getReader().lines().collect(Collectors.joining());
-		CollectorRequestValidator.validateJson(requestBody);
+
+		try {
+			CollectorRequestValidator.validateJson(requestBody);
+		} catch (InvalidCollectorRequestException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().write(e.getMessage());
+			// stop the chain
+			return false;
+		}
 		return true;
 	}
 }

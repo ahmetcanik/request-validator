@@ -2,13 +2,13 @@ package com.github.ahmetcanik.validator.controller;
 
 import com.github.ahmetcanik.validator.CollectorRequest;
 import com.github.ahmetcanik.validator.exceptions.InvalidCollectorRequestException;
-import com.github.ahmetcanik.validator.services.CollectorRequestValidator;
 import com.github.ahmetcanik.validator.services.RequestProcessorService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,7 +26,16 @@ public class RequestProcessorController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<String> processRequest(@RequestBody @Valid CollectorRequest collectorRequest) {
+	public ResponseEntity<String> processRequest(@RequestBody @Valid CollectorRequest collectorRequest,
+	                                             BindingResult bindingResult) {
+		for (Object object : bindingResult.getAllErrors()) {
+			if (object instanceof ObjectError) {
+				ObjectError objectError = (ObjectError) object;
+
+				return ResponseEntity.badRequest().body(objectError.getDefaultMessage());
+			}
+		}
+
 		// first validate request
 		try {
 			processorService.validateRequest(collectorRequest);
@@ -34,10 +43,5 @@ public class RequestProcessorController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 		return ResponseEntity.ok(processorService.processRequest(collectorRequest));
-	}
-
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.setValidator(new CollectorRequestValidator());
 	}
 }
