@@ -9,12 +9,12 @@ Details for the task is omitted for now.
 Project needs a mysql database. A sample DDL SQL is provided here:
 ## create database
 ```sql
-CREATE USER 'textual'@'localhost'
-  IDENTIFIED BY 'textual';
+CREATE USER 'validator'@'localhost'
+  IDENTIFIED BY 'validator';
 
-CREATE DATABASE textual;
+CREATE DATABASE validator;
 
-GRANT ALL PRIVILEGES ON textual.* TO 'textual'@'localhost';
+GRANT ALL PRIVILEGES ON validator.* TO 'validator'@'localhost';
 ```
 
 ## create tables and feed sample data
