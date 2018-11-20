@@ -220,7 +220,10 @@ User-Agent A6-Indexer is blacklisted
 
 # stats service
 ## request
-```json
+```http request
+POST http://localhost:8090/stats
+Content-Type: application/json
+
 {
   "customerID": 1,
   "timestamp": 1542574800000
