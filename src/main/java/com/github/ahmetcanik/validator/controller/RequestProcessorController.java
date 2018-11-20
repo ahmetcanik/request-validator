@@ -1,6 +1,6 @@
 package com.github.ahmetcanik.validator.controller;
 
-import com.github.ahmetcanik.validator.CollectorRequest;
+import com.github.ahmetcanik.validator.services.entity.CollectorRequest;
 import com.github.ahmetcanik.validator.exceptions.InvalidCollectorRequestException;
 import com.github.ahmetcanik.validator.services.RequestProcessorService;
 import lombok.AccessLevel;

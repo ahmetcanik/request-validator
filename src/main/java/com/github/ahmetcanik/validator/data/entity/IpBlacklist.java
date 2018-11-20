@@ -9,15 +9,15 @@ import java.util.Objects;
 @Entity
 @Table(name = "ip_blacklist")
 public class IpBlacklist {
-	private int ip;
+	private long ip;
 
 	@Id
 	@Column(name = "ip")
-	public int getIp() {
+	public long getIp() {
 		return ip;
 	}
 
-	public void setIp(int ip) {
+	public void setIp(long ip) {
 		this.ip = ip;
 	}
 

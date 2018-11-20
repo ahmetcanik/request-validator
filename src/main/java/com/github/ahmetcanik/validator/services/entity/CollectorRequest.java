@@ -1,4 +1,4 @@
-package com.github.ahmetcanik.validator;
+package com.github.ahmetcanik.validator.services.entity;
 
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +16,7 @@ public class CollectorRequest {
 	private String remoteIP;
 
 	@NotNull(message = "timestamp cannot be null")
-	private Integer timestamp;
+	private Long timestamp;
 
 	public Integer getCustomerID() {
 		return customerID;
@@ -50,11 +50,11 @@ public class CollectorRequest {
 		this.remoteIP = remoteIP;
 	}
 
-	public Integer getTimestamp() {
+	public Long getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Integer timestamp) {
+	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
 }

@@ -43,6 +43,8 @@ public class CollectorRequestInterceptor implements HandlerInterceptor {
 			}
 		}
 
+		// then validate json via parser
+		// if it is invalid then we have an exception here
 		try {
 			CollectorRequestPreprocessor.validateJson(requestBody);
 		} catch (InvalidCollectorRequestException e) {
@@ -53,12 +55,14 @@ public class CollectorRequestInterceptor implements HandlerInterceptor {
 			return false;
 		}
 
-		// we don't write valid logs here since it still has a chance to be invalid
+		// we don't write valid logs here since it still has a chance to be invalid (i.e. customer is not enabled)
 		return true;
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		// all the requests that are not returned false from preHandle will fall here
+		// thus we have logged every loggable (having a customer id field) requests.
 		CollectorRequestPreprocessor.logRequest(requestBody, ex != null || response.getStatus() != HttpServletResponse.SC_OK, hourlyStatsRepository);
 	}
 }

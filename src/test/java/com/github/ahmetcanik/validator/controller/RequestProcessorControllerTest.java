@@ -1,7 +1,8 @@
 package com.github.ahmetcanik.validator.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.ahmetcanik.validator.CollectorRequest;
+import com.github.ahmetcanik.validator.services.entity.CollectorRequest;
+import com.github.ahmetcanik.validator.utils.IpUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.net.InetAddress;
-import java.nio.ByteBuffer;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -33,7 +31,7 @@ public class RequestProcessorControllerTest {
 		collectorRequest.setTagID(2);
 		collectorRequest.setUserID("aaaaaaaa-bbbb-cccc-1111-222222222222");
 		collectorRequest.setRemoteIP("123.234.56.78");
-		collectorRequest.setTimestamp(1500000000);
+		collectorRequest.setTimestamp(1500000000L);
 
 		String json = new ObjectMapper().writeValueAsString(collectorRequest);
 
@@ -72,7 +70,7 @@ public class RequestProcessorControllerTest {
 	public void processRequestMissingStringField() throws Exception {
 		mvc.perform(post("/processor")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"customerId\":2,\"tagID\":2,\"remoteIP\":\"123.234.56.78\"," +
+				.content("{\"customerID\":2,\"tagID\":2,\"remoteIP\":\"123.234.56.78\"," +
 						"\"timestamp\":1500000000}"))
 				.andExpect(status().isBadRequest())
 				.andExpect(content().string("userID cannot be null"));
@@ -85,7 +83,7 @@ public class RequestProcessorControllerTest {
 		collectorRequest.setTagID(2);
 		collectorRequest.setUserID("aaaaaaab-bbbb-cccc-1111-222222222222");
 		collectorRequest.setRemoteIP("123.234.56.78");
-		collectorRequest.setTimestamp(1500000000);
+		collectorRequest.setTimestamp(1500000000L);
 
 		String json = new ObjectMapper().writeValueAsString(collectorRequest);
 
@@ -103,7 +101,7 @@ public class RequestProcessorControllerTest {
 		collectorRequest.setTagID(2);
 		collectorRequest.setUserID("aaaadaaac-bbbb-cccc-1111-222222222222");
 		collectorRequest.setRemoteIP("123.234.56.78");
-		collectorRequest.setTimestamp(1500000000);
+		collectorRequest.setTimestamp(1500000000L);
 
 		String json = new ObjectMapper().writeValueAsString(collectorRequest);
 
@@ -121,11 +119,11 @@ public class RequestProcessorControllerTest {
 		collectorRequest.setTagID(2);
 		collectorRequest.setUserID("aaaadaaad-bbbb-cccc-1111-222222222222");
 		collectorRequest.setRemoteIP("127.0.0.1");
-		collectorRequest.setTimestamp(1500000000);
+		collectorRequest.setTimestamp(1500000000L);
 
 		String json = new ObjectMapper().writeValueAsString(collectorRequest);
 
-		int ip = ByteBuffer.wrap(InetAddress.getByName(collectorRequest.getRemoteIP()).getAddress()).getInt();
+		long ip = IpUtils.ipToLong(collectorRequest.getRemoteIP());
 
 		mvc.perform(post("/processor")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +139,7 @@ public class RequestProcessorControllerTest {
 		collectorRequest.setTagID(2);
 		collectorRequest.setUserID("aaaadaaae-bbbb-cccc-1111-222222222222");
 		collectorRequest.setRemoteIP("192.168.1.1");
-		collectorRequest.setTimestamp(1500000000);
+		collectorRequest.setTimestamp(1500000000L);
 
 		String userAgent = "A6-Indexer";
 		mvc.perform(post("/processor")

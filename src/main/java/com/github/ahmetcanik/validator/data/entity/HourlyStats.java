@@ -14,6 +14,7 @@ public class HourlyStats {
 	private long invalidCount;
 
 	@Id
+	@GeneratedValue
 	@Column(name = "id")
 	public int getId() {
 		return id;
