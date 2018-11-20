@@ -91,6 +91,20 @@ All HTTP request to be validated should be in the given JSON format:
   "timestamp":1500000000
 }
 ```
+All requests should be send with `HTTP POST` to `/processor` with `application/json` content type. Example:
+
+```http request
+POST http://localhost:8090/processor
+Content-Type: application/json
+
+{
+  "customerID":1,
+  "tagID":2,
+  "userID":"aaaaaaaa-bbbb-cccc-1111-222222222222",
+  "remoteIP":"123.234.56.78",
+  "timestamp":1500000000
+}
+```
 
 ## responses for valid and invalid requests
 All examples here is implemented as `junit4 test` in the `test` folder in the project. All valid requests are reponded with `OK (200)`
@@ -203,4 +217,139 @@ User-Agent: A6-Indexer
 ```
 User-Agent A6-Indexer is blacklisted
 ``` 
+
+# stats service
+## request
+```json
+{
+  "customerID": 1,
+  "timestamp": 1542574800000
+}
+```
+
+## response
+```json
+{
+  "hourlyStats": {
+    "0": {
+      "requestCount": 24,
+      "invalidCount": 0
+    },
+    "1": {
+      "requestCount": 23,
+      "invalidCount": 0
+    },
+    "2": {
+      "requestCount": 22,
+      "invalidCount": 0
+    },
+    "3": {
+      "requestCount": 21,
+      "invalidCount": 0
+    },
+    "4": {
+      "requestCount": 20,
+      "invalidCount": 0
+    },
+    "5": {
+      "requestCount": 19,
+      "invalidCount": 0
+    },
+    "6": {
+      "requestCount": 18,
+      "invalidCount": 0
+    },
+    "7": {
+      "requestCount": 17,
+      "invalidCount": 0
+    },
+    "8": {
+      "requestCount": 16,
+      "invalidCount": 0
+    },
+    "9": {
+      "requestCount": 15,
+      "invalidCount": 0
+    },
+    "10": {
+      "requestCount": 14,
+      "invalidCount": 0
+    },
+    "11": {
+      "requestCount": 13,
+      "invalidCount": 0
+    },
+    "12": {
+      "requestCount": 12,
+      "invalidCount": 0
+    },
+    "13": {
+      "requestCount": 11,
+      "invalidCount": 0
+    },
+    "14": {
+      "requestCount": 10,
+      "invalidCount": 0
+    },
+    "15": {
+      "requestCount": 9,
+      "invalidCount": 0
+    },
+    "16": {
+      "requestCount": 8,
+      "invalidCount": 0
+    },
+    "17": {
+      "requestCount": 7,
+      "invalidCount": 0
+    },
+    "18": {
+      "requestCount": 6,
+      "invalidCount": 0
+    },
+    "19": {
+      "requestCount": 5,
+      "invalidCount": 0
+    },
+    "20": {
+      "requestCount": 4,
+      "invalidCount": 0
+    },
+    "21": {
+      "requestCount": 3,
+      "invalidCount": 0
+    },
+    "22": {
+      "requestCount": 2,
+      "invalidCount": 0
+    },
+    "23": {
+      "requestCount": 1,
+      "invalidCount": 0
+    }
+  },
+  "totalRequestCount": 300
+}
+```
+# testing
+Project provides `junit4` test in the `test` folder. Tests are executed on a in-memory test database. Schema creation and sample data feeding is handled automatically.  
+A sample case for every possible scenario is tried to be provided.
+To run the tests:
+```
+mvn test
+```
+
+# further considerations
+Since the project is for evaluational purposes, performance optimisation is not considered:
+
+* For example all requests are stored in mysql database, however in a real production environment either a in-memory database or cache server should be chosen as data store.  
+* The HTTP layer is handled via `spring-boot`. In real world, a custom HTTP interceptor may been developed and benchmarked with `spring-boot`, then choose the one that has most performance.
+
 # references
+## MyRequestWrapper
+To extract the request body in the `CollectorRequestInterceptor.preHandle` method, `request.getInputStream()` method needs to be called. 
+However, `request.getInputStream()` method cannot be called more than once [(*)](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html#getInputStream--).
+A workaround is provided [here](https://howtodoinjava.com/servlets/httpservletrequestwrapper-example-read-request-body/). 
+
+## IpUtils
+Long and IP address string conversion is done with the code provided [here](https://www.mkyong.com/java/java-convert-ip-address-to-decimal-number/) 
