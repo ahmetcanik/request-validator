@@ -110,6 +110,97 @@ and all invalids are with `BAD REQUEST (400)` HTTP status codes.
 ```
 OK
 ```
-      
-   
+
+### malformed JSON
+#### request
+```
+{
+```
+#### response
+```
+Malformed JSON
+```
+
+### missing field
+#### request
+```json
+{
+  "tagID":2,
+  "userID":"aaaaaaaa-bbbb-cccc-1111-222222222222",
+  "remoteIP":"123.234.56.78",
+  "timestamp":1500000000
+}
+```
+#### response
+```
+customerID cannot be null
+```
+
+### customer not found
+#### request
+```json
+{
+  "customerID":5,
+  "tagID":2,
+  "userID":"aaaaaaaa-bbbb-cccc-1111-222222222222",
+  "remoteIP":"123.234.56.78",
+  "timestamp":1500000000
+}
+```
+#### response
+```
+Customer ID 5 not found
+``` 
+
+### customer disabled
+#### request
+```json
+{
+  "customerID":3,
+  "tagID":2,
+  "userID":"aaaaaaaa-bbbb-cccc-1111-222222222222",
+  "remoteIP":"123.234.56.78",
+  "timestamp":1500000000
+}
+```
+#### response
+```
+Customer with ID 3 is disabled
+``` 
+
+### remote ip blacklisted
+#### request
+```json
+{
+  "customerID":3,
+  "tagID":2,
+  "userID":"aaaaaaaa-bbbb-cccc-1111-222222222222",
+  "remoteIP":"127.0.0.1",
+  "timestamp":1500000000
+}
+```
+#### response
+```
+Remote IP 127.0.0.1 [2130706433] is blacklisted
+``` 
+
+### user-agent blacklisted
+#### request
+```http request
+POST http://localhost:8090/processor
+Content-Type: application/json
+User-Agent: A6-Indexer
+
+{
+  "customerID":1,
+  "tagID":2,
+  "userID":"aaaaaaaa-bbbb-cccc-1111-222222222222",
+  "remoteIP":"123.234.56.78",
+  "timestamp":1500000000
+}
+```
+#### response
+```
+User-Agent A6-Indexer is blacklisted
+``` 
 # references

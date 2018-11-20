@@ -53,7 +53,9 @@ public class RequestProcessorControllerTest {
 	public void processRequestMalformedJSON() throws Exception {
 		mvc.perform(post("/processor")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{")).andExpect(status().isBadRequest());
+				.content("{"))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("Malformed JSON"));
 	}
 
 	@Test
