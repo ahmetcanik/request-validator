@@ -2,6 +2,7 @@ package com.github.ahmetcanik.validator.data.repository;
 
 import com.github.ahmetcanik.validator.data.entity.HourlyStats;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,13 +32,14 @@ public class HourlyStatsRepositoryTest {
 		hourlyStatsRepository.save(saved);
 
 		HourlyStats found = hourlyStatsRepository.findByCustomerIdAndTime(saved.getCustomerId(), time).get(0);
-		assert found.equals(saved);
+		assertEquals(saved, found);
 	}
 
 	@Test
 	public void findByCustomerIdAndTimeGreaterThanEqualAndTimeLessThanOrderByTimeAsc() {
 		int customerId = 2;
 
+		// first request of the day
 		Timestamp firstHour = Timestamp.valueOf("2018-11-19 00:00:00");
 		HourlyStats first = new HourlyStats();
 		first.setCustomerId(customerId);
@@ -46,6 +48,7 @@ public class HourlyStatsRepositoryTest {
 		first.setTime(firstHour);
 		hourlyStatsRepository.save(first);
 
+		// last request of the day
 		Timestamp lastHour = Timestamp.valueOf("2018-11-19 23:59:59");
 		HourlyStats second = new HourlyStats();
 		second.setCustomerId(customerId);
@@ -55,6 +58,7 @@ public class HourlyStatsRepositoryTest {
 
 		hourlyStatsRepository.save(second);
 
+		// this one should be excluded since it belongs to next day
 		Timestamp nextDay = Timestamp.valueOf("2018-11-20 00:00:00");
 		HourlyStats excluded = new HourlyStats();
 		excluded.setCustomerId(customerId);
@@ -67,8 +71,9 @@ public class HourlyStatsRepositoryTest {
 		Timestamp start = Timestamp.valueOf("2018-11-19 00:00:00");
 		Timestamp end = Timestamp.valueOf("2018-11-20 00:00:00");
 
-		List<HourlyStats> founds =
+		List<HourlyStats> found =
 				hourlyStatsRepository.findByCustomerIdAndTimeGreaterThanEqualAndTimeLessThanOrderByTimeAsc(customerId, start, end);
-		assert founds.equals(Arrays.asList(first, second));
+		List<HourlyStats> saved = Arrays.asList(first, second);
+		assertEquals(saved, found);
 	}
 }

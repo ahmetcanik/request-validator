@@ -1,5 +1,8 @@
 package com.github.ahmetcanik.validator.utils;
 
+/**
+ * Source: https://www.mkyong.com/java/java-convert-ip-address-to-decimal-number/
+ */
 public class IpUtils {
 	public static long ipToLong(String ipAddress) {
 		long result = 0;
